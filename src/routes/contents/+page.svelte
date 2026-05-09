@@ -8,10 +8,8 @@
 
   $effect(() => {
     if (typeof document === 'undefined') return;
-    document.documentElement.setAttribute(
-      'style',
-      '--bg:#ffffff;--ink:#14110d;--muted:rgba(20,17,13,0.56);--rule:rgba(20,17,13,0.16);--accent:#6a6a6a;'
-    );
+    // Contents is long-form scrolling; the chapter pages set body to
+    // overflow:hidden globally, so we lift that here for the duration.
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'auto';
     return () => { document.body.style.overflow = prevOverflow; };
