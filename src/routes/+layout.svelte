@@ -1,9 +1,11 @@
 <script>
   import { onMount } from 'svelte';
   import { onNavigate } from '$app/navigation';
+  import { page } from '$app/state';
   import { base } from '$app/paths';
   import { mdBlock } from 'sveltekitbook/md';
   import { glossary, slugify } from '$lib/glossary.js';
+  import QrCode from '$lib/QrCode.svelte';
   // KaTeX first so our app.css overrides win at equal specificity.
   import 'katex/dist/katex.min.css';
   import '../app.css';
@@ -143,6 +145,19 @@
     const m = path.match(/\/(\d{2,})/);
     return m ? parseInt(m[1], 10) : null;
   }
+
+  // Map the current route to one of the generated QR slugs in static/qr/.
+  // Cover, contents, glossary use sentinel names; chapter sections use the
+  // two-digit section number (matching `flat[i].num`).
+  let qrSlug = $derived.by(() => {
+    const path = page.url?.pathname ?? '/';
+    const stripped = path.replace(new RegExp(`^${base}`), '') || '/';
+    if (stripped === '/' || stripped === '') return '_cover';
+    if (stripped.startsWith('/contents')) return '_contents';
+    if (stripped.startsWith('/glossary')) return '_glossary';
+    const m = stripped.match(/^\/(\d{2,})/);
+    return m ? m[1] : null;
+  });
 </script>
 
 <svelte:window onkeydown={onKeyDown} />
@@ -163,6 +178,10 @@
 >
   {@render children()}
 </div>
+
+{#if qrSlug}
+  <QrCode slug={qrSlug} />
+{/if}
 
 {#if popover}
   <div
