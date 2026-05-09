@@ -12,6 +12,7 @@
   import { base as basePath } from '$app/paths';
   import Giscus from 'sveltekitbook/Giscus.svelte';
   import PageMeta from 'sveltekitbook/PageMeta.svelte';
+  import QrCode from '$lib/QrCode.svelte';
   import { TITLE, GISCUS, SITE_URL } from '$lib/config.js';
 
   const proseOpts = { glossaryBase: `${basePath}/glossary` };
@@ -303,6 +304,10 @@
         <div class="eli5-body">{@html mdBlockM(section.eli5, mdOpts)}</div>
       </aside>
     {/if}
+
+    <div class="qr-wrap">
+      <QrCode slug={section.num} label={`Scan to come back to page ${section.num}`} />
+    </div>
 
     {#if lastOfChapter && nextCh}
       <aside class="ch-next">
@@ -855,6 +860,11 @@
   }
   .grammar-link:hover { border-bottom-color: var(--accent); }
 
+  .qr-wrap {
+    grid-column: 2;
+    max-width: 56ch;
+  }
+
   .eli5 {
     grid-column: 2;
     margin-top: 2rem;
@@ -988,7 +998,7 @@
       gap: 2.5vw;
       padding: 1.5vw 0;
     }
-    .number, .title, .gesture, .body-text, .source, .eli5, .figures, .grammar, .ch-next, .steps {
+    .number, .title, .gesture, .body-text, .source, .eli5, .figures, .grammar, .ch-next, .steps, .qr-wrap {
       grid-column: 1;
       max-width: none;
     }
