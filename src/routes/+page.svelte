@@ -3,6 +3,7 @@
   import { base } from '$app/paths';
   import { flat, chapters } from '$lib/outline.js';
   import { createPager } from 'sveltekitbook/gestures';
+  import QrCode from '$lib/QrCode.svelte';
   import { TITLE, AUTHOR, YEAR } from '$lib/config.js';
 
   let dragOffset = $state(0);
@@ -54,6 +55,10 @@
       Plenum Press, New York, 1972, pp. 85–103.
     </p>
     <p class="counter">{chapters.length} chapters · {flat.length} sections.</p>
+
+    <div class="cover-qr">
+      <QrCode slug="_cover" label="Scan to share the cover" />
+    </div>
   </div>
 
   <div class="meta bottom">

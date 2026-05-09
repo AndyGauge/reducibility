@@ -3,6 +3,7 @@
   import { mdBlock } from 'sveltekitbook/md';
   import { renderProse } from '$lib/prose.js';
   import { entriesAlphabetical, slugify } from '$lib/glossary.js';
+  import QrCode from '$lib/QrCode.svelte';
   import { TITLE } from '$lib/config.js';
 
   const entries = entriesAlphabetical();
@@ -46,6 +47,10 @@
         </div>
       {/each}
     </dl>
+
+    <div class="glossary-qr">
+      <QrCode slug="_glossary" label="Scan to come back to the glossary" />
+    </div>
 
     <footer class="bottom">
       <a class="back" href="{base}/">← Back to cover</a>

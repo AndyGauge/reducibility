@@ -1,6 +1,9 @@
 <script>
   import { base } from '$app/paths';
+  import { mdBlock } from 'sveltekitbook/md';
   import { chapters, flat } from '$lib/outline.js';
+  import { renderProse } from '$lib/prose.js';
+  import QrCode from '$lib/QrCode.svelte';
   import { TITLE } from '$lib/config.js';
 
   $effect(() => {
@@ -16,9 +19,12 @@
 
   function romanize(n) {
     const r = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X',
-               'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX'];
+               'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX',
+               'XXI', 'XXII', 'XXIII', 'XXIV', 'XXV', 'XXVI', 'XXVII', 'XXVIII', 'XXIX', 'XXX'];
     return r[n] || String(n);
   }
+
+  const proseOpts = { glossaryBase: `${base}/glossary` };
 </script>
 
 <svelte:head><title>Contents — {TITLE}</title></svelte:head>
@@ -43,7 +49,7 @@
             <a href="{base}/{ch.sections[0].num}">{ch.title}</a>
           </h2>
           {#if ch.intro}
-            <p class="chapter-intro">{ch.intro}</p>
+            <div class="chapter-intro">{@html renderProse(ch.intro, mdBlock, proseOpts)}</div>
           {/if}
         </header>
 
@@ -60,6 +66,10 @@
       </li>
     {/each}
   </ol>
+
+  <div class="contents-qr">
+    <QrCode slug="_contents" label="Scan to come back to the table of contents" />
+  </div>
 </main>
 
 <style>
